@@ -33,7 +33,7 @@ sudo tar -C unsquashfs -c . | docker import - ghcr.io/routedbits/vyos:$VYOS_VERS
 # Cleanup
 sudo umount rootfs
 popd
-rm -rf vyos
+sudo rm -rf vyos
 
 # Push image to GitHub registry
 docker push ghcr.io/routedbits/vyos:$VYOS_VERSION
