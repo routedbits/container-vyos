@@ -1,5 +1,5 @@
 ---
-name: Image build
+name: Image Build and Push
 on:
   workflow_dispatch:
     inputs:
@@ -10,8 +10,11 @@ on:
         required: true
 
 jobs:
-  build:
+  build-and-push-image:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -23,3 +26,13 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
         run: bash build.sh
+
+      - name: Log in to the Container registry
+        uses: docker/login-action
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image to registry
+        run: docker push ghcr.io/routedbits/vyos:${{ inputs.version }}

@@ -36,4 +36,4 @@ popd
 sudo rm -rf vyos
 
 # Push image to GitHub registry
-docker push ghcr.io/routedbits/vyos:$VYOS_VERSION
+#docker push ghcr.io/routedbits/vyos:$VYOS_VERSION
