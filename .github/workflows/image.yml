@@ -6,7 +6,7 @@ on:
       version:
         description: VyOS version to build
         type: string
-        default: 'latest'
+        default: 'rolling-latest'
         required: true
 
 jobs:

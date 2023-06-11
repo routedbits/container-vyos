@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VYOS_VERSION=${VERSION:=latest}
+VYOS_VERSION=${VERSION:=rolling-latest}
 
 # Create temp work directory
 [ -d "vyos" ] || mkdir -p vyos
