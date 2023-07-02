@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y squashfs-tools
 
-      - name: Build Image
+      - name: Build Image from ISO
         env:
           VERSION: ${{ inputs.version }}
         run: bash build.sh
@@ -35,4 +35,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push image to registry
-        run: docker push ghcr.io/routedbits/vyos:${{ inputs.version }}
+        run: |
+          docker tag ghcr.io/routedbits/vyos:${{ inputs.version }} ghcr.io/routedbits/vyos:latest
+          docker tag ghcr.io/routedbits/vyos:${{ inputs.version }} ghcr.io/routedbits/vyos:rolling-latest
+          docker push ghcr.io/routedbits/vyos:${{ inputs.version }} --all-tags
+
+      - name: Build and Push SSH Enabled Image
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: |
+            ghcr.io/routedbits/vyos:latest-ssh
+            ghcr.io/routedbits/vyos:rolling-latest-ssh
+            ghcr.io/routedbits/vyos:${{ inputs.version }}-ssh
