@@ -5,44 +5,52 @@ prefix: ''
 topology:
   defaults:
     kind: linux
-    image: ghcr.io/routedbits/vyos:1.4-rolling-202306190317
+    image: ghcr.io/routedbits/vyos:1.4-rolling-202306280317-ssh
     sysctls:
       net.ipv6.conf.all.disable_ipv6: 0
     binds:
       - /lib/modules:/lib/modules
-      - config.boot:/opt/vyatta/etc/config/config.boot
     entrypoint: '/sbin/init'
   nodes:
-    # Core
+    internet:
+      kind: bridge
+
     r1:
     r2:
-
-    # Spine
     r3:
     r4:
     r5:
 
-    # Leaf
     ce6:
     ce7:
     ce8:
+    ce9:
+    ce10:
+    ce11:
 
 
   links:
     # R1
-    - endpoints: ["r1:eth1", "r3:eth1"]
-    - endpoints: ["r1:eth2", "r4:eth1"]
-    - endpoints: ["r1:eth3", "r5:eth1"]
-    # R2
-    - endpoints: ["r2:eth1", "r3:eth2"]
-    - endpoints: ["r2:eth2", "r4:eth2"]
-    - endpoints: ["r2:eth3", "r5:eth2"]
+    #- endpoints: ["r1:eth1", "internet:eth1"]
+    ## R2
+    #- endpoints: ["r2:eth1", "internet:eth2"]
+    ## R3
+    #- endpoints: ["r3:eth1", "internet:eth3"]
+    ## R4
+    #- endpoints: ["r4:eth1", "internet:eth4"]
+    ## R5
+    #- endpoints: ["r5:eth1", "internet:eth5"]
 
-    # CE6
-    - endpoints: ["ce6:eth1", "r3:eth3"]
+    ## CE6
+    #- endpoints: ["ce6:eth1", "internet:eth6"]
+    ## CE7
+    #- endpoints: ["ce7:eth1", "internet:eth7"]
+    ## CE8
+    #- endpoints: ["ce8:eth1", "internet:eth8"]
+    ## CE9
+    #- endpoints: ["ce9:eth1", "internet:eth9"]
+    ## CE10
+    #- endpoints: ["ce10:eth1", "internet:eth10"]
+    ## CE11
+    #- endpoints: ["ce11:eth1", "internet:eth11"]
 
-    # CE7
-    - endpoints: ["ce7:eth1", "r4:eth3"]
-
-    # CE8
-    - endpoints: ["ce8:eth1", "r5:eth3"]
