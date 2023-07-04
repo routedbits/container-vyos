@@ -15,30 +15,35 @@ x-vyos-config: &x-vyos-config
 services:
   test-R1:
     <<: *x-vyos-config
+    hostname: test-R1
     networks:
       mgmt:
         ipv4_address: 100.64.0.2
         ipv6_address: fdcd:9464:8bad::2
   test-R2:
     <<: *x-vyos-config
+    hostname: test-R2
     networks:
       mgmt:
         ipv4_address: 100.64.0.3
         ipv6_address: fdcd:9464:8bad::3
   test-R3:
     <<: *x-vyos-config
+    hostname: test-R3
     networks:
       mgmt:
         ipv4_address: 100.64.0.4
         ipv6_address: fdcd:9464:8bad::4
   test-R4:
     <<: *x-vyos-config
+    hostname: test-R4
     networks:
       mgmt:
         ipv4_address: 100.64.0.5
         ipv6_address: fdcd:9464:8bad::5
   test-R5:
     <<: *x-vyos-config
+    hostname: test-R5
     networks:
       mgmt:
         ipv4_address: 100.64.0.6
