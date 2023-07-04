@@ -1,24 +1,53 @@
 version: '2.4'
 
+x-vyos-config: &x-vyos-config
+  image: ghcr.io/routedbits/vyos:rolling-latest-ssh
+  privileged: true
+  entrypoint: ['/sbin/init']
+  volumes:
+    - /lib/modules:/lib/modules
+  sysctls:
+    - net.ipv6.conf.all.disable_ipv6=0
+  cap_add:
+    - NET_ADMIN
+    - NET_RAW
+
 services:
-  vyos:
-    build:
-      context: .
-    hostname: vyos
-    privileged: true
-    entrypoint: ['/sbin/init']
-    volumes:
-      - /lib/modules:/lib/modules
-    ports:
-      - 2222:22/tcp
+  test-R1:
+    <<: *x-vyos-config
     networks:
-      - vyos
-    sysctls:
-      - net.ipv6.conf.all.disable_ipv6=0
+      mgmt:
+        ipv4_address: 100.64.0.2
+        ipv6_address: fdcd:9464:8bad::2
+  test-R2:
+    <<: *x-vyos-config
+    networks:
+      mgmt:
+        ipv4_address: 100.64.0.3
+        ipv6_address: fdcd:9464:8bad::3
+  test-R3:
+    <<: *x-vyos-config
+    networks:
+      mgmt:
+        ipv4_address: 100.64.0.4
+        ipv6_address: fdcd:9464:8bad::4
+  test-R4:
+    <<: *x-vyos-config
+    networks:
+      mgmt:
+        ipv4_address: 100.64.0.5
+        ipv6_address: fdcd:9464:8bad::5
+  test-R5:
+    <<: *x-vyos-config
+    networks:
+      mgmt:
+        ipv4_address: 100.64.0.6
+        ipv6_address: fdcd:9464:8bad::6
+
 networks:
-  vyos:
+  mgmt:
     enable_ipv6: true
     ipam:
       config:
-        - subnet: 192.0.2.0/24
-        - subnet: 2001:db8::/32
+        - subnet: 100.64.0.0/24
+        - subnet: fdcd:9464:8bad::/48
