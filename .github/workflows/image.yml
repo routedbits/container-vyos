@@ -36,11 +36,11 @@ jobs:
 
       - name: Use Specified Version
         run: echo "VERSION=${{ inputs.version }}" >> $GITHUB_ENV
-        if: ${ inputs.VERSION != '' }}
+        if: ${{ inputs.VERSION != '' }}
 
       - name: Use Latest Version
         run: echo "VERSION=$(python vyos-latest.py)" >> $GITHUB_ENV
-        if: ${ inputs.VERSION == '' }}
+        if: ${{ inputs.VERSION == '' }}
 
       - name: Build Image from ISO
         run: bash build.sh
