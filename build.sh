@@ -1,6 +1,11 @@
 #!/bin/bash
 
-VYOS_VERSION=${VERSION:=rolling-latest}
+VYOS_VERSION=${VERSION:=notspecified}
+
+# Version was not provided via argument, get it from site
+if [ "$VYOS_VERSION" == "notspecified" ]; then
+    VYOS_VERSION=$(python vyos-latest.py)
+fi
 
 # Create temp work directory
 [ -d "vyos" ] || mkdir -p vyos
