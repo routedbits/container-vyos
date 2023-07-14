@@ -34,9 +34,15 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
+      - name: Use Specified Version
+        run: echo "VERSION=${{ inputs.version }}" >> $GITHUB_ENV
+        if: ${ inputs.VERSION != '' }}
+
+      - name: Use Latest Version
+        run: echo "VERSION=$(python vyos-latest.py)" >> $GITHUB_ENV
+        if: ${ inputs.VERSION == '' }}
+
       - name: Build Image from ISO
-        env:
-          VERSION: ${{ inputs.version }}
         run: bash build.sh
 
       - name: Log in to the Container registry
@@ -48,8 +54,8 @@ jobs:
 
       - name: Push image to registry
         run: |
-          docker tag ghcr.io/routedbits/vyos:${{ inputs.version }} ghcr.io/routedbits/vyos:latest
-          docker tag ghcr.io/routedbits/vyos:${{ inputs.version }} ghcr.io/routedbits/vyos:rolling-latest
+          docker tag ghcr.io/routedbits/vyos:${{ env.VERSION }} ghcr.io/routedbits/vyos:latest
+          docker tag ghcr.io/routedbits/vyos:${{ env.VERSION }} ghcr.io/routedbits/vyos:rolling-latest
           docker push ghcr.io/routedbits/vyos --all-tags
 
       - name: Build and Push SSH Enabled Image
@@ -59,4 +65,4 @@ jobs:
           tags: |
             ghcr.io/routedbits/vyos:latest-ssh
             ghcr.io/routedbits/vyos:rolling-latest-ssh
-            ghcr.io/routedbits/vyos:${{ inputs.version }}-ssh
+            ghcr.io/routedbits/vyos:${{ env.VERSION }}-ssh
