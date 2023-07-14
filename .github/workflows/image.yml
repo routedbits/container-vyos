@@ -6,8 +6,11 @@ on:
       version:
         description: VyOS version to build
         type: string
-        default: 'rolling-latest'
-        required: true
+        required: false
+
+  # Every Day at 6AM
+  schedule:
+    - cron: '0 6 * * *'
 
 jobs:
   build-and-push-image:
@@ -21,6 +24,15 @@ jobs:
 
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y squashfs-tools
+
+      - name: Set up Python 
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
 
       - name: Build Image from ISO
         env:
