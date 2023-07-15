@@ -47,7 +47,7 @@ jobs:
         if: ${{ inputs.VERSION == '' }}
 
       - name: Skip Image Build If Image Exists
-        run: echo "${{ env.VERSION }} already exists in registry"
+        run: echo "version already exists in registry"
         if: ${{ env.VERSION == 'skipbuild' }}
 
       # vyos-latest will check if the image already exists in GitHub
