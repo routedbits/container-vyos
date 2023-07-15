@@ -46,6 +46,10 @@ jobs:
         run: echo "VERSION=$(python vyos-latest.py)" >> $GITHUB_ENV
         if: ${{ inputs.VERSION == '' }}
 
+      - name: Skip Image Build If Image Exists
+        run: echo "${{ env.VERSION }} already exists in registry"
+        if: ${{ env.VERSION == 'skipbuild' }}
+
       # vyos-latest will check if the image already exists in GitHub
       # and will output 'skipbuild' if it does, which is checked by subsequent steps
       # so the image isn't rebuilt unnecessarily
