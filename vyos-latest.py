@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 import json
 import os
+import sys
 import requests
 
 URL = 'https://vyos.net/get/nightly-builds/'
@@ -27,7 +28,7 @@ latest = '-'.join(isos[0].split('-')[1:4])
 # Read GITHUB_TOKEN from envvar
 envvar = os.getenv('GITHUB_TOKEN')
 if not envvar:
-    os.exit(1)
+    sys.exit(1)
 
 github_token = b64encode(envvar.encode('utf-8')).decode('utf-8')
 

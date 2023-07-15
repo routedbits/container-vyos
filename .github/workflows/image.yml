@@ -35,10 +35,14 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Use Specified Version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: echo "VERSION=${{ inputs.version }}" >> $GITHUB_ENV
         if: ${{ inputs.VERSION != '' }}
 
       - name: Use Latest Version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: echo "VERSION=$(python vyos-latest.py)" >> $GITHUB_ENV
         if: ${{ inputs.VERSION == '' }}
 
