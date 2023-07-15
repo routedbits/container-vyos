@@ -42,8 +42,13 @@ jobs:
         run: echo "VERSION=$(python vyos-latest.py)" >> $GITHUB_ENV
         if: ${{ inputs.VERSION == '' }}
 
+      # vyos-latest will check if the image already exists in GitHub
+      # and will output 'skipbuild' if it does, which is checked by subsequent steps
+      # so the image isn't rebuilt unnecessarily
+
       - name: Build Image from ISO
         run: bash build.sh
+        if: ${{ env.VERSION != 'skipbuild' }}
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2
@@ -51,12 +56,14 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ env.VERSION != 'skipbuild' }}
 
       - name: Push image to registry
         run: |
           docker tag ghcr.io/routedbits/vyos:${{ env.VERSION }} ghcr.io/routedbits/vyos:latest
           docker tag ghcr.io/routedbits/vyos:${{ env.VERSION }} ghcr.io/routedbits/vyos:rolling-latest
           docker push ghcr.io/routedbits/vyos --all-tags
+        if: ${{ env.VERSION != 'skipbuild' }}
 
       - name: Build and Push SSH Enabled Image
         uses: docker/build-push-action@v4
@@ -66,3 +73,4 @@ jobs:
             ghcr.io/routedbits/vyos:latest-ssh
             ghcr.io/routedbits/vyos:rolling-latest-ssh
             ghcr.io/routedbits/vyos:${{ env.VERSION }}-ssh
+        if: ${{ env.VERSION != 'skipbuild' }}
