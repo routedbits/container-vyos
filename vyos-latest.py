@@ -23,7 +23,7 @@ for iso in section.find_all('a'):
     isos.append(iso.contents[0])
 
 # only get the version, eg 1.4-rolling-202307141223
-latest = '-'.join(isos[0].split('-')[1:4])
+latest = '-'.join(isos[0].split('-')[0:4])
 
 # Read GITHUB_TOKEN from envvar
 envvar = os.getenv('GITHUB_TOKEN')
