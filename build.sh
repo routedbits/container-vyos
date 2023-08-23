@@ -16,7 +16,7 @@ iso_file=vyos-$VYOS_VERSION-amd64.iso
 if [ "$VYOS_VERSION" == "rolling-latest" ]; then
     iso_file=vyos-rolling-latest.iso
 fi
-[ -f $iso_file ] || wget https://s3-us.vyos.io/rolling/current/$iso_file
+[ -f $iso_file ] || wget https://github.com/vyos/vyos-rolling-nightly-builds/releases/download/$VYOS_VERSION/$iso_file
 
 # Create temp rootfs directory for mount
 [ -d rootfs ] || mkdir -p rootfs
