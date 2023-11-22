@@ -34,7 +34,7 @@ github_token = b64encode(envvar.encode('utf-8')).decode('utf-8')
 
 # Check if GitHub already has the tag
 auth = {'Authorization': f'Bearer {github_token}'}
-registry = 'https://ghcr.io/v2/routedbits/vyos/tags/list'
+registry = 'https://ghcr.io/v2/routedbits/vyos/tags/list?n=1000'
 
 # Get existing tags from GitHub Registry
 tags = requests.get(registry, headers=auth).json()['tags']
